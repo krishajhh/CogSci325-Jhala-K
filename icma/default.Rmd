@@ -28,14 +28,13 @@ When you save the notebook, an HTML file containing the code and output will be 
 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
-
+#must run this before running any code 
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
 ```
 
 # ICMA 9/8/2025
-
 ```{r}
 view(penguins)
 ```
@@ -45,4 +44,29 @@ ggplot(data = penguins,
       mapping = aes(x = flipper_length_mm, y = bill_length_mm))
 geom_point()
 ```
+
+# ICMA 09/11/25
+```{r}
+PlantGrowth
+```
+
+```{r}
+view(PlantGrowth)
+```
+
+```{r}
+ggplot(data = PlantGrowth, 
+       mapping = aes(x = group, y = weight))
+geom_point()
+  
+```
+
+```{r}
+PlantGrowth
+  group_by(group) |>
+  summarise(avg_weight = mean(weight))  |>
+```
+
+
+
 
