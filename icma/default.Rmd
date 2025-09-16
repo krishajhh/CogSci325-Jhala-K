@@ -32,6 +32,7 @@ The preview shows you a rendered HTML copy of the contents of the editor. Conseq
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
+library(nycflights13)
 ```
 
 # ICMA 9/8/2025
@@ -67,6 +68,20 @@ PlantGrowth
   summarise(avg_weight = mean(weight))  |>
 ```
 
+# ICMA 09/16/2025 
 
+```{r}
+glimpse(flights)
+```
 
+```{r}
+flights_houston <- flights |>
+    filter(dest %in% c("IAH", "HOU"))
+```
+
+```{r}
+flights |>
+  filter(arr_delay > 120 & dep_delay <= 0)
+  distinct(arr_delay, dep_delay)
+```
 
