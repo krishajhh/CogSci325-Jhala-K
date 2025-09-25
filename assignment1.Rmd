@@ -1,0 +1,59 @@
+---
+title: "Assignment 1"
+author: "Krisha Jhala"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+# The Data 
+The data I used for this assignment is the iris data set. The iris data set consists of the measurements in centimeters of the variables that I needed, such as the sepal length, sepal width, petal length, and petal width of the 50 flowers from the 3 species of iris, which were critical to my research questions. The species are called Iris setosa, versicolor, and virginica. The data has 5 columns and 150 rows. 
+```{r}
+View(iris)
+```
+
+# Research Questions  
+1.Is there a relationship between the petal length and sepal length in iris flowers? This question is my numerical versus numerical variables. 
+2.Does the different iris species differ based on their average sepal width? This question is my categorical vs numerical variables.  
+
+# Plots
+Question 1
+```{r}
+ggplot(data = iris, 
+      aes(x = Petal.Length, y = Sepal.Length)) + 
+      geom_point() + 
+      geom_smooth(method = "lm") + 
+      theme_minimal() + 
+      labs(title = "Relationship between Petal length and Sepal Length", 
+           x = "Petal Length (cm)", 
+           y = "Sepal Length (cm)")
+```
+
+Question 2
+```{r}
+iris |>
+  group_by(Species) |>
+  summarise(mean_width = mean(Sepal.Width, na.rm = TRUE), 
+            sd_width = sd(Sepal.Width, na.rm = TRUE), 
+            count = n())
+```
+
+```{r}
+iris |>
+  group_by(Species) |>
+  summarise(mean_width = mean(Sepal.Width, na.rm = TRUE)) |>
+  ggplot(aes(x = Species, y = mean_width)) + 
+  geom_bar(stat = "identity", fill = "lightgreen") + 
+  theme_minimal() + 
+  labs(title = "Average Sepal Width by Species", 
+       x = "Species", 
+       y = "Average Sepal Width (cm)")
+```
+
+#Conclusions 
+
+The scatterplot I created shows that there is a positive correlation or relationship between the petal length and the sepal length. I noticed that as the petal length increases, the sepal length also tends to increase. The regression line here confirms this result, which shows that the two variables are correlated with each other in the iris flowers.
+
+The bar plot showcases that the 3 iris species have different average sepal widths and I wanted to showcase that before I made my plot. I noticed that the Iris Setosa had the largest average sepal width, while the Iris versicolor had the smallest. The third species was in the middle. This indicates to me that the sepal width is one characteristic that helps us distinguish between the different species. 

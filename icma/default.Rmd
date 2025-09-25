@@ -113,3 +113,61 @@ flights |>
   ylim(0, 0.55)
 ```
 
+# ICMA 9/23/25
+
+
+
+# ICMA 9/25/25
+
+```{r}
+head(billboard)
+```
+
+
+```{r}
+billboard |>
+  pivot_longer(cols = wk1:wk76, 
+               names_to = "week", 
+               values_to = "rank") |>
+  head(10)
+```
+
+```{r}
+billboard |>
+  filter(artist == "2 Pac") |>
+  select(artist, wk10)
+```
+
+```{r}
+billboard_long |>
+  filter(artist == "2 Pac" & week == "wk10")
+```
+
+```{r}
+billboard_long_dropna <- billboard |>
+  pivot_longer(cols = wk1:wk76, 
+               names_to = "week", 
+               values_to = "rank",
+               values_drop_na = TRUE)
+
+```
+
+
+```{r}
+billboard_long_dropna |>
+  filter(artist == "2 Pac " & week == "wk10")
+```
+
+```{r}
+billboard_long_dropna |>
+  pivot_wider(names_from = "week", 
+              values_from = "rank")
+```
+
+
+```{r}
+?pivot_longer
+```
+
+
+
