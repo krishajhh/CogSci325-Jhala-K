@@ -164,9 +164,48 @@ billboard_long_dropna |>
               values_from = "rank")
 ```
 
-
 ```{r}
 ?pivot_longer
+```
+
+
+#ICMA 09/30/25
+```{r}
+flights |>
+  mutate(gain = arr_delay - dep_delay) |>
+  filter(!is.na(gain)) |>
+  group_by(carrier) |>
+  summarize(
+    avg_gain = mean(gain), 
+    total_flights = n()
+    ) |>
+  arrange(desc(avg_gain)) |>
+  select(carrier, avg_gain, total_flights)
+```
+
+```{r}
+getwd()
+```
+
+```{r}
+class_data <- read_csv("/Users/krishajh/Desktop/undergrad/fourth year/CogSci325-Jhala-K/icma/Week5-1_ClassData.csv")
+```
+```{r}
+read_csv("Week5-1_ClassData.csv", 
+         col_types = list(bonusPayment = col_number()),
+         na = "N/A")
+```
+
+```{r}
+problems(class_data)
+```
+
+```{r}
+read_csv("Week5-1_ClassData.csv", 
+         col_types = list(bonusPayment = col_number()),
+         na = c("N/A",".")
+    ) |>
+  rename(bonus_payment = bonusPayment)
 ```
 
 
