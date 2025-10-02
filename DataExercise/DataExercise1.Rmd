@@ -1,0 +1,112 @@
+---
+title: "Data Exercise 1"
+author: "Krisha Jhala"
+date: "r Sys.Date()"
+output: html_notebook
+---
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+# set up
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+data <- read.csv("Bats_Balls_2025-10-02.csv") |>
+  filter(DistributionChannel == "anonymous" & Progress == "100") |>
+  select(
+    subject_id = ResponseId,
+    date = EndDate, 
+    
+    cost_pencil_control = 'Pencil.Control',
+    conf_pencil_control = 'Conf..Pencil.Control', 
+    cost_magazine_control = Magazine_Control,
+    conf_magazine_control = 'Conf..Mag..Control',
+  
+    cost_magazine_standard = 'Magazine.Standard', 
+    conf_magazine_standard = 'Conf..Mag..Stand.', 
+    cost_pencil_standard = Pencil_Standard,
+    conf_pencil_standard = 'Conf..Pencil.Stand.', 
+    familiar = Q10
+  )
+```
+
+```{r}
+data
+```
+
+
+
+```{r}
+data_cost <- data |>
+  select(subject_id, date, 
+         contains("cost"))
+```
+
+```{r}
+data_conf <- data |>
+  select(subject_id, date, 
+         contains("conf"))
+```
+
+# Cost 
+```{r}
+cost_long <- data_cost |>
+  pivot_longer(contains("cost")) |>
+  separate(name, into = c("DV", "objet", "item"), sep = "_") |>
+  mutate(
+    cost_clean = parse_number(value) < 1 - parse_number(value)*100,
+    cost_check = parse_number(value) >= 1 - parse_number(value)
+  ) |>
+  filter(!is.na(cost_clean))
+```
+
+case_when(EVALUATIVE STATEMENT - OUTCOME, 
+          IF THIS IS TRUE - DO THIS, 
+          IF THIS IS TRUE - DO THIS)
+
+```{r}
+cost_long |>
+ group_by(item, cost_clean) |>
+  summarise(n = n())
+```
+
+# Conf
+```{r}
+  conf_long <- data_conf |>
+  pivot_longer(contains("conf")) |>
+  separate(name, into = c("DV", "objet", "item"), sep = "_") |>
+  mutate(confidence_clean = parse_number(value))
+ 
+```
+
+```{r}
+conf_long |>
+ group_by(item) |> 
+  summarise(mean_confidence = mean(confidence_clean, na.rm = TRUE))
+```
+
+```{r}
+conf_long |> 
+  # get rid of missing data 
+  filter(!is.na(confidence_clean)) |> 
+  # remove the object column
+  select(-objet) |> 
+  # make control and standard into columns
+  pivot_wider(names_from = item, values_from = confidence_clean) |>
+  ggplot(aes(y = control, x = standard)) + 
+  geom_point()
+```
+
+
+```{r}
+?tidyr_tidy_select
+```
+
