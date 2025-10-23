@@ -4,13 +4,11 @@ author: Krisha Jhala
 date: 2025-09-04
 output: html_notebook
 ---
-# heading 
-
 ## subheading 
 
 # heading 
 
-#ICMA Sept 4 2025 
+#ICMA 09/4/25 
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
 
@@ -28,11 +26,14 @@ When you save the notebook, an HTML file containing the code and output will be 
 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
-#must run this before running any code 
+must run this before running any code 
+#Library 
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
 library(nycflights13)
+library(babynames)
+
 ```
 
 # ICMA 9/8/2025
@@ -250,4 +251,85 @@ mpg |>
             fill = "lightgreen", alpha = 2.0)
 ```
 
+#ICMA 10/16/25
+```{r}
+NA > 5 
 
+10 == NA 
+
+NA == NA
+```
+
+```{r}
+flights |> 
+  group_by(year, month, day) |> 
+  summarize {
+    proportion_delayed = mean(dog_delay <= 60, na.rm = TRUE), 
+    count_long_delay = sum(arr_delay >= 300, na.rm = TRUE), 
+    .groups = "drop"
+  }
+```
+
+```{r}
+x <- c(-3:3, NA)
+if_else(x > 0, "+ve", "-ve")
+```
+
+```{r}
+if_else(x > 0, "+ve", "-ve", "???")
+```
+
+```{r}
+flights |>
+  group_by(dest) |>
+  summarize(carriers = n_distinct(carrier)) |>
+  arrange(desc(carriers))
+```
+
+# ICMA 10/21/25 
+Data Exercise 2 
+
+# ICMA 10/23/25
+```{r}
+str_length(c("a", "R for data science", NA))
+```
+
+```{r}
+view(babynames)
+```
+
+```{r}
+babynames |>
+  mutate(contains_ie = str_detect(name,
+                                  pattern = "ie"))
+```
+
+```{r}
+babynames |>
+  mutate(contains_a = str_count(str_to_lower(name), 
+                                 pattern = "a")) |>
+  ggplot(aes(x = contains_a))
+  geom_histogram()
+```
+
+```{r}
+str_detect(fruit, "^.*$")
+```
+
+```{r}
+str_detect(fruit, "\\{.+\\}")
+```
+
+```{r}
+str_detect(c("{}", "{hello}", "{hi"), "\\{.+\\}")
+```
+
+```{r}
+babynames |>
+  filter(str_detect(name, "^[AEIOU]"))
+```
+
+```{r}
+babynames |> 
+  filter(str_detect(name, "^[^AEIOUaeiou][AEIOUaeiou]"))
+```
