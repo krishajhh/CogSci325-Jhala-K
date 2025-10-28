@@ -33,7 +33,6 @@ library(tidyverse)
 library(palmerpenguins)
 library(nycflights13)
 library(babynames)
-
 ```
 
 # ICMA 9/8/2025
@@ -332,4 +331,22 @@ babynames |>
 ```{r}
 babynames |> 
   filter(str_detect(name, "^[^AEIOUaeiou][AEIOUaeiou]"))
+```
+
+#ICMA 10/28/25
+```{r}
+gss_cat
+```
+
+```{r}
+gss_cat |>
+  group_by(relig) |>
+  summarize(mean_tvhours = mean(tvhours, na.rm = TRUE)) |>
+  ggplot(aes(y = relig, x = mean_tvhours)) + 
+  geom_point() 
+```
+
+```{r}
+today()
+now()
 ```
